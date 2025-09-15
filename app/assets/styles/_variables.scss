@@ -1,0 +1,28 @@
+$custom-color: #f00;
+//$变量只在当前@use等引入的作用域生效
+// Breakpoints(只做实例，实际项目中有更便捷的方式)
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+// Mixins(只做实例，实际项目中有更便捷的方式)
+@mixin responsive($breakpoint) {
+  @if $breakpoint == lt-sm {
+    @media (max-width: $breakpoint-sm) {
+      @content;
+    }
+  } @else if $breakpoint == lt-md {
+    @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
+      @content;
+    }
+  } @else if $breakpoint == lt-lg {
+    @media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg) {
+      @content;
+    }
+  } @else if($breakpoint == gt-lg) {
+    @media (min-width: $breakpoint-lg) {
+      @content;
+    }
+  }
+}

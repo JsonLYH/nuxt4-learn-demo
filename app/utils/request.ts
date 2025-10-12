@@ -3,10 +3,11 @@ import { createError } from '#app';
 import type { IApiResponse, IHttpOptions } from '~/types';
 import { $fetch } from 'ofetch';
 import { getToken } from '~/utils/auth';
-import {ElMessage} from "../../.nuxt/imports";
 // import { useUserStore } from '~/store';
 
 const baseURL = import.meta.env.VITE_API_BASE;
+const SUCCESS_CODES = [0,200]
+
 //获取鉴权信息
 function getAuthorization() {
   try {
@@ -46,7 +47,7 @@ async function http<T = any>(options: IHttpOptions): Promise<IApiResponse<T>> {
     onResponse: async ({ response }) => {
       const res = response._data as IApiResponse<T>;
       const code = Number(res.code);
-      if (code !== Number(import.meta.env.VITE_API_SUCCESS_CODE)) {
+      if (!SUCCESS_CODES.includes(code)) {
         const expiredCodes = [1001];
         const logoutCodes = [1000];
         if (expiredCodes.includes(code)) {
@@ -107,7 +108,7 @@ async function $http<T = any>(options: IHttpOptions): Promise<IApiResponse<T>> {
     onResponse: async ({ response }) => {
       const res = response._data as IApiResponse<T>;
       const code = Number(res.code);
-      if (code !== Number(import.meta.env.VITE_API_SUCCESS_CODE)) {
+      if (!SUCCESS_CODES.includes(code)) {
         const expiredCodes = [1001];
         const logoutCodes = [1000];
         if (expiredCodes.includes(code)) {

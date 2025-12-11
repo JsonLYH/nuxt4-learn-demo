@@ -161,6 +161,23 @@ export default defineNuxtPlugin(() => {
 ## 执行顺序
 全局中间件（有多个全局则按照字母顺序）》页面中间件（如果有多个则按照数组顺序）
 
+# 远端数据请求方式
+## 做法1.使用useFetch
+```javascript
+//useFetch的效果相当于useAsyncData+$fetch
+const { data } = await useFetch('/api/item')
+```
+## 做法2.使用useAsyncData+$fetch
+```javascript
+//在SSR期间，数据仅在服务器端获取并传输到客户端,也就是说不会造成重复请求
+const { data } = await useAsyncData('item', () => $fetch('/api/item'))
+```
+## 做法3.单独使用$fetch
+//在SSR过程中，数据会被提取两次(后端接口会被调用两次，除非只在client生命周期使用)，一次在服务器上，另一次在客户端上。
+const dataTwice = await $fetch('/api/item')
+```javascript
+```
+
 # 开发环境Node版本
 ## node 22.18.0（最好是偶数版本）
 
